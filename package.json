@@ -60,8 +60,7 @@
   "jest": {
     "preset": "react-native",
     "transformIgnorePatterns": [
-      "node_modules/(?!((jest-)?react-native|@react-native(-firebase)?)/)",
-      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)/)"
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|@react-native-firebase/messaging/)"
     ]
   }
 }
