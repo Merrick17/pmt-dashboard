@@ -1,5 +1,9 @@
 import {getApi, postApi} from '../../utils/apiHelpers';
 import {
+  GET_OTD_INFO,
+  GET_OTD_INFO_SUCCESS,
+  GET_TEMPS_EFFICIENT,
+  GET_TEMPS_EFFICIENT_SUCCESS,
   GET_TRS_GLOBALE_INFO,
   GET_TRS_GLOBALE_INFO_FAILED,
   GET_TRS_GLOBALE_INFO_SUCCESS,
@@ -73,6 +77,38 @@ export const getTrsInfoApi = type => async dispatch => {
       dispatch(getTrsInfoSuccess(res.trs));
     }
   } catch (error) {
+    console.log('err', error);
     dispatch(getTrsInfoError());
+  }
+};
+
+export const getTempsEfficentApi = () => async dispatch => {
+  try {
+    dispatch({
+      type: GET_TEMPS_EFFICIENT,
+    });
+    let result = await postApi('prod/temps/efficient', {
+      startDate: '2022-01-01',
+      endDate: '2022-12-31',
+    });
+    dispatch({
+      type: GET_TEMPS_EFFICIENT_SUCCESS,
+      payload: result.result,
+    });
+  } catch (error) {}
+};
+export const getOtdApi = () => async dispatch => {
+  try {
+    dispatch({
+      type: GET_OTD_INFO,
+    });
+    let result = await getApi('prod/otd/count');
+    console.log('OTD', result);
+    dispatch({
+      type: GET_OTD_INFO_SUCCESS,
+      payload: result.result,
+    });
+  } catch (error) {
+    console.log('OTD ERR', error);
   }
 };

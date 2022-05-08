@@ -7,14 +7,15 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {globalStyles} from '../styles/globalStyles';
-import {Input, Box, Select, Button} from 'native-base';
+import {Box, Select, Button} from 'native-base';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {useDispatch, useSelector} from 'react-redux';
 import {getAllUsersApi} from '../redux/actions/users.action';
 import moment from 'moment';
 import {useForm, Controller} from 'react-hook-form';
 import {addNewQRQCApi} from '../redux/actions/qrqc.actions';
-
+import {Input, theme} from 'galio-framework';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 const AddNewQRQC = ({navigation}) => {
   const dispatch = useDispatch();
   const {userList} = useSelector(state => state.users);
@@ -63,7 +64,7 @@ const AddNewQRQC = ({navigation}) => {
       Date_probleme: moment(dateProb).format('YYYY-MM-DD'),
       date_detection: moment(dateDetc).format('YYYY-MM-DD'),
     };
-    dispatch(addNewQRQCApi(body,navigation));
+    dispatch(addNewQRQCApi(body, navigation));
     console.log(data);
   };
   const showMode = currentMode => {
@@ -79,148 +80,23 @@ const AddNewQRQC = ({navigation}) => {
     showMode('time');
   };
   return (
-    <ScrollView
-      style={{width: '100%', height: '100%', backgroundColor: '#FFF'}}
-      contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}>
-      <View style={styles.problem}>
-        <View style={styles.header}>
-          <Text style={styles.label}>Problème</Text>
-        </View>
-        <View style={{padding: 10, justifyContent: 'space-evenly', flex: 1}}>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                w={450}
-                placeholder="Service"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
-            )}
-            name="Service"
-          />
-          {errors.Service && (
-            <Text style={styles.errorLabel}>Champ obligatoire.</Text>
-          )}
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                w={450}
-                placeholder="Num Article"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
-            )}
-            name="NumArticle"
-          />
-          {errors.NumArticle && (
-            <Text style={styles.errorLabel}>Champ obligatoire.</Text>
-          )}
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                w={450}
-                placeholder="Num OF"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
-            )}
-            name="NumOf"
-          />
-          {errors.NumOf && (
-            <Text style={styles.errorLabel}>Champ obligatoire.</Text>
-          )}
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                w={450}
-                placeholder="Description Problème"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
-            )}
-            name="desc_prob"
-          />
-          {errors.desc_prob && (
-            <Text style={styles.errorLabel}>Champ obligatoire.</Text>
-          )}
-          {errors.raison_defaut && (
-            <Text style={styles.errorLabel}>Champ obligatoire.</Text>
-          )}
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                w={450}
-                placeholder="Position Problème"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
-            )}
-            name="pos_probleme"
-          />
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                w={450}
-                placeholder="Moyenne de detection"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
-            )}
-            name="moyenne_detection"
-          />
-          {errors.moyenne_detection && (
-            <Text style={styles.errorLabel}>Champ obligatoire.</Text>
-          )}
-          <Select
-            minWidth="200"
-            maxWidth={450}
-            selectedValue={problemUser}
-            onValueChange={value => setProblemUser(value)}
-            accessibilityLabel="Reponsable Problème"
-            placeholder="Reponsable Problème">
-            {userList.map(elm => (
-              <Select.Item
-                key={elm.MATRIC.toString()}
-                label={`${elm.PRENOM} ${elm.NOMPER}`}
-                value={elm.MATRIC}
-              />
-            ))}
-          </Select>
+    <View style={globalStyles.container}>
+      <ScrollView
+        style={{width: '100%', height: '100%'}}
+        contentContainerStyle={{
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <View style={styles.problem}>
+          <View style={styles.header}>
+            <Text style={styles.label}>Problème</Text>
+          </View>
           <View
             style={{
               width: '90%',
               flexDirection: 'row',
               justifyContent: 'space-between',
+              margin: 20,
             }}>
             {showProblem && (
               <DateTimePicker
@@ -240,82 +116,19 @@ const AddNewQRQC = ({navigation}) => {
               onPress={() => {
                 setShowProb(true);
               }}>
+              <MaterialIcon name="date-range" color={'#FFF'} size={20} />
               <Text style={styles.btnLabel}>Date de problème</Text>
             </TouchableOpacity>
             <Text style={styles.dateLabel}>
               {moment(dateProb).format('DD/MM/YYYY')}
             </Text>
           </View>
-        </View>
-      </View>
-      <View style={styles.problem}>
-        <View style={styles.header}>
-          <Text style={styles.label}>Détection</Text>
-        </View>
-        <View style={{padding: 10, justifyContent: 'space-evenly', flex: 1}}>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                w={450}
-                placeholder="Raison défaut"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
-            )}
-            name="raison_defaut"
-          />
-
-          {errors.raison_defaut && (
-            <Text style={styles.errorLabel}>Champ obligatoire.</Text>
-          )}
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                w={450}
-                placeholder="Position détection"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
-            )}
-            name="pos_detection"
-          />
-          {errors.pos_detection && (
-            <Text style={styles.errorLabel}>Champ obligatoire.</Text>
-          )}
-
-          <Select
-            minWidth="200"
-            maxWidth={450}
-            selectedValue={detectUser}
-            onValueChange={value => setDetecUser(value)}
-            accessibilityLabel="Reponsable Détection"
-            placeholder="Reponsable Détection">
-            {userList.map(elm => (
-              <Select.Item
-                key={elm.MATRIC.toString()}
-                label={`${elm.PRENOM} ${elm.NOMPER}`}
-                value={elm.MATRIC}
-              />
-            ))}
-          </Select>
           <View
             style={{
-              width: 450,
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              alignSelf: 'flex-start',
+              padding: 10,
+              justifyContent: 'space-evenly',
+              flex: 1,
+              width: '100%',
             }}>
             <Controller
               control={control}
@@ -324,16 +137,26 @@ const AddNewQRQC = ({navigation}) => {
               }}
               render={({field: {onChange, onBlur, value}}) => (
                 <Input
-                  w={140}
-                  placeholder="Nombre pièce"
+                  placeholder="Service"
                   onChangeText={onChange}
                   onBlur={onBlur}
                   value={value}
+                  borderless
+                  color={theme.COLORS.WARNING}
+                  style={{
+                    borderColor: theme.COLORS.WARNING,
+                    height: 65,
+                    width: '100%',
+                    marginRight: 10,
+                  }}
+                  placeholderTextColor={'#FFF'}
+                  password={true}
+                  bgColor="rgba(0,0,0,0.4)"
                 />
               )}
-              name="nbr_piece"
+              name="Service"
             />
-            {errors.nbr_piece && (
+            {errors.Service && (
               <Text style={styles.errorLabel}>Champ obligatoire.</Text>
             )}
             <Controller
@@ -343,16 +166,21 @@ const AddNewQRQC = ({navigation}) => {
               }}
               render={({field: {onChange, onBlur, value}}) => (
                 <Input
-                  w={140}
-                  placeholder="Reccurence"
+                  placeholder="Num Article"
                   onChangeText={onChange}
                   onBlur={onBlur}
                   value={value}
+                  borderless
+                  color={theme.COLORS.WARNING}
+                  style={{borderColor: theme.COLORS.WARNING, height: 65}}
+                  placeholderTextColor={'#FFF'}
+                  password={true}
+                  bgColor="rgba(0,0,0,0.4)"
                 />
               )}
-              name="reccurence"
+              name="NumArticle"
             />
-            {errors.reccurence && (
+            {errors.NumArticle && (
               <Text style={styles.errorLabel}>Champ obligatoire.</Text>
             )}
             <Controller
@@ -362,71 +190,375 @@ const AddNewQRQC = ({navigation}) => {
               }}
               render={({field: {onChange, onBlur, value}}) => (
                 <Input
-                  w={120}
-                  placeholder="Fréquence"
+                  w={450}
+                  placeholder="Num OF"
                   onChangeText={onChange}
                   onBlur={onBlur}
                   value={value}
+                  borderless
+                  color={theme.COLORS.WARNING}
+                  style={{borderColor: theme.COLORS.WARNING, height: 65}}
+                  placeholderTextColor={'#FFF'}
+                  password={true}
+                  bgColor="rgba(0,0,0,0.4)"
                 />
               )}
-              name="frequence_detection"
+              name="NumOf"
             />
-            {errors.frequence_detection && (
+            {errors.NumOf && (
               <Text style={styles.errorLabel}>Champ obligatoire.</Text>
             )}
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <Input
+                  w={450}
+                  placeholder="Description Problème"
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  borderless
+                  color={theme.COLORS.WARNING}
+                  style={{borderColor: theme.COLORS.WARNING, height: 65}}
+                  placeholderTextColor={'#FFF'}
+                  password={true}
+                  bgColor="rgba(0,0,0,0.4)"
+                />
+              )}
+              name="desc_prob"
+            />
+            {errors.desc_prob && (
+              <Text style={styles.errorLabel}>Champ obligatoire.</Text>
+            )}
+            {errors.raison_defaut && (
+              <Text style={styles.errorLabel}>Champ obligatoire.</Text>
+            )}
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <Input
+                  w={450}
+                  placeholder="Position Problème"
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  borderless
+                  color={theme.COLORS.WARNING}
+                  style={{borderColor: theme.COLORS.WARNING, height: 65}}
+                  placeholderTextColor={'#FFF'}
+                  password={true}
+                  bgColor="rgba(0,0,0,0.4)"
+                />
+              )}
+              name="pos_probleme"
+            />
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <Input
+                  w={450}
+                  placeholder="Moyenne de detection"
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  borderless
+                  color={theme.COLORS.WARNING}
+                  style={{borderColor: theme.COLORS.WARNING, height: 65}}
+                  placeholderTextColor={'#FFF'}
+                  password={true}
+                  bgColor="rgba(0,0,0,0.4)"
+                />
+              )}
+              name="moyenne_detection"
+            />
+            {errors.moyenne_detection && (
+              <Text style={styles.errorLabel}>Champ obligatoire.</Text>
+            )}
+            <Select
+              style={{
+                backgroundColor: 'rgba(0,0,0,0.4)',
+                borderColor: 'rgba(0,0,0,0.4)',
+              }}
+              minWidth="200"
+              maxWidth={450}
+              selectedValue={problemUser}
+              onValueChange={value => setProblemUser(value)}
+              accessibilityLabel="Reponsable Problème"
+              height={20}
+              backgroundColor={'rgba(0,0,0,0.4)'}
+              borderColor={'rgba(0,0,0,0.4)'}
+              placeholder="Reponsable Problème">
+              {userList.map(elm => (
+                <Select.Item
+                  key={elm.MATRIC.toString()}
+                  label={`${elm.PRENOM} ${elm.NOMPER}`}
+                  value={elm.MATRIC}
+                />
+              ))}
+            </Select>
           </View>
-
+        </View>
+        <View style={styles.problem}>
+          <View style={styles.header}>
+            <Text style={styles.label}>Détection</Text>
+          </View>
           <View
             style={{
-              width: '90%',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
+              padding: 10,
+              justifyContent: 'space-evenly',
+              flex: 1,
+              width: '100%',
             }}>
-            {showDetec && (
-              <DateTimePicker
-                testID="dateTimePicker"
-                value={dateProb}
-                mode={mode}
-                is24Hour={true}
-                onChange={(ev, date) => {
-                  setDateDetec(date);
-                  setShowDetec(false);
-                }}
-              />
-            )}
-
-            <TouchableOpacity
-              style={styles.btn}
-              onPress={() => {
-                setShowDetec(true);
+            <Select
+              minWidth="200"
+              maxWidth={450}
+              height={20}
+              backgroundColor={'rgba(0,0,0,0.4)'}
+              borderColor={'rgba(0,0,0,0.4)'}
+              selectedValue={detectUser}
+              onValueChange={value => setDetecUser(value)}
+              accessibilityLabel="Reponsable Détection"
+              placeholder="Reponsable Détection">
+              {userList.map(elm => (
+                <Select.Item
+                  key={elm.MATRIC.toString()}
+                  label={`${elm.PRENOM} ${elm.NOMPER}`}
+                  value={elm.MATRIC}
+                />
+              ))}
+            </Select>
+            <View
+              style={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                alignSelf: 'flex-start',
               }}>
-              <Text style={styles.btnLabel}>Date de problème</Text>
-            </TouchableOpacity>
-            <Text style={styles.dateLabel}>
-              {' '}
-              {moment(dateDetc).format('DD/MM/YYYY')}
-            </Text>
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <Input
+                    placeholder="Nombre pièce"
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    borderless
+                    color={theme.COLORS.WARNING}
+                    style={{
+                      borderColor: theme.COLORS.WARNING,
+                      height: 65,
+                      width: 150,
+                    }}
+                    placeholderTextColor={'#FFF'}
+                    password={true}
+                    bgColor="rgba(0,0,0,0.4)"
+                  />
+                )}
+                name="nbr_piece"
+              />
+              {errors.nbr_piece && (
+                <Text style={styles.errorLabel}>Champ obligatoire.</Text>
+              )}
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                }}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <Input
+                    placeholder="Reccurence"
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    borderless
+                    color={theme.COLORS.WARNING}
+                    style={{
+                      borderColor: theme.COLORS.WARNING,
+                      height: 65,
+                      width: 150,
+                    }}
+                    placeholderTextColor={'#FFF'}
+                    password={true}
+                    bgColor="rgba(0,0,0,0.4)"
+                  />
+                )}
+                name="reccurence"
+              />
+              {errors.reccurence && (
+                <Text style={styles.errorLabel}>Champ obligatoire.</Text>
+              )}
+              <Controller
+                control={control}
+                rules={{
+                  required: true,
+                  width: 100,
+                }}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <Input
+                    placeholder="Fréquence"
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    value={value}
+                    borderless
+                    color={theme.COLORS.WARNING}
+                    style={{
+                      borderColor: theme.COLORS.WARNING,
+                      height: 65,
+                    }}
+                    placeholderTextColor={'#FFF'}
+                    password={true}
+                    bgColor="rgba(0,0,0,0.4)"
+                  />
+                )}
+                name="frequence_detection"
+              />
+              {errors.frequence_detection && (
+                <Text style={styles.errorLabel}>Champ obligatoire.</Text>
+              )}
+            </View>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <Input
+                  placeholder="Raison défaut"
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  borderless
+                  color={theme.COLORS.WARNING}
+                  style={{
+                    borderColor: theme.COLORS.WARNING,
+                    height: 65,
+                    width: '100%',
+                    marginRight: 10,
+                  }}
+                  placeholderTextColor={'#FFF'}
+                  password={true}
+                  bgColor="rgba(0,0,0,0.4)"
+                />
+              )}
+              name="raison_defaut"
+            />
+
+            {errors.raison_defaut && (
+              <Text style={styles.errorLabel}>Champ obligatoire.</Text>
+            )}
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({field: {onChange, onBlur, value}}) => (
+                <Input
+                  w={450}
+                  placeholder="Position détection"
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  value={value}
+                  borderless
+                  color={theme.COLORS.WARNING}
+                  style={{
+                    borderColor: theme.COLORS.WARNING,
+                    height: 65,
+                    width: '100%',
+                    marginRight: 10,
+                  }}
+                  placeholderTextColor={'#FFF'}
+                  password={true}
+                  bgColor="rgba(0,0,0,0.4)"
+                />
+              )}
+              name="pos_detection"
+            />
+            {errors.pos_detection && (
+              <Text style={styles.errorLabel}>Champ obligatoire.</Text>
+            )}
+
+            <View
+              style={{
+                width: '90%',
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+              }}>
+              {showDetec && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={dateProb}
+                  mode={mode}
+                  is24Hour={true}
+                  onChange={(ev, date) => {
+                    setDateDetec(date);
+                    setShowDetec(false);
+                  }}
+                />
+              )}
+
+              <TouchableOpacity
+                style={styles.btn}
+                onPress={() => {
+                  setShowDetec(true);
+                }}>
+                <MaterialIcon name="date-range" color={'#FFF'} size={20} />
+                <Text style={styles.btnLabel}>Date de detection</Text>
+              </TouchableOpacity>
+              <Text style={styles.dateLabel}>
+                {' '}
+                {moment(dateDetc).format('DD/MM/YYYY')}
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
-      <View style={styles.btnList}>
-        <Button
-          size={'lg'}
-          style={{width: '40%'}}
-          onPress={handleSubmit(onSubmit)}>
-          Suivant
-        </Button>
-        <Button
-          size={'lg'}
-          style={{width: '40%'}}
-          colorScheme="secondary"
-          onPress={() => {
-            navigation.navigate('Reason');
-          }}>
-          Annuler
-        </Button>
-      </View>
-    </ScrollView>
+        <View style={styles.btnList}>
+          <TouchableOpacity
+            style={{
+              width: '45%',
+              height: 70,
+              backgroundColor: '#EA580C',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 20,
+            }}
+            onPress={handleSubmit(onSubmit)}>
+            <Text style={{fontSize: 20, fontWeight: 'bold', color: '#FFF'}}>
+              Suivant
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{
+              width: '45%',
+              height: 70,
+              backgroundColor: '#BE123C',
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 20,
+            }}
+            onPress={() => {
+              navigation.pop();
+            }}>
+            <Text style={{fontSize: 20, fontWeight: 'bold', color: '#FFF'}}>
+              Annuler
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -434,17 +566,17 @@ export default AddNewQRQC;
 
 const styles = StyleSheet.create({
   problem: {
-    width: '90%',
+    width: '100%',
     minHeight: 550,
     marginTop: 25,
-    backgroundColor: '#FFF',
+
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
   header: {
     width: '100%',
-    height: 50,
-    backgroundColor: '#0284C7',
+    height: 100,
+    backgroundColor: '#FDBA74',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -454,13 +586,14 @@ const styles = StyleSheet.create({
   },
   btn: {
     display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
     alignItems: 'center',
-    backgroundColor: '#0284C7',
-    height: 35,
-    width: 250,
+    backgroundColor: '#FB923C',
+    height: 50,
+    width: 350,
     padding: 10,
+    borderRadius: 10,
   },
   btnLabel: {
     color: '#FFF',
@@ -468,6 +601,7 @@ const styles = StyleSheet.create({
   },
   dateLabel: {
     fontSize: 24,
+    color: '#FFF',
   },
   btnList: {
     width: '90%',

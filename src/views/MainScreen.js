@@ -1,51 +1,42 @@
 import {StyleSheet, View, SafeAreaView, Text} from 'react-native';
 import React from 'react';
 import {globalStyles} from '../styles/globalStyles';
-import {VictoryBar, VictoryChart, VictoryTheme} from 'victory-native';
-import {Button, ScrollView} from 'native-base';
+import {ScrollView} from 'native-base';
 import TRSComp from '../components/TRSComp';
-import RebusComp from '../components/RebusComp';
-import HistoryModal from '../components/HistoryModal';
 import {useSelector, useDispatch} from 'react-redux';
-import {HIDE_MODAL} from '../redux/actionTypes';
-import TRSGlobalComp from '../components/TrsGlobalComp';
-const MainScreen = () => {
+import {Fab} from 'native-base';
+import TempsEfficient from '../components/TempsEfficient';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+const MainScreen = ({navigation}) => {
   const {showModal, selectedModal} = useSelector(state => state.modal);
   const dispatch = useDispatch();
-  const data = [
-    {quarter: 1, earnings: 13000},
-    {quarter: 2, earnings: 16500},
-    {quarter: 3, earnings: 14250},
-    {quarter: 4, earnings: 19000},
-  ];
 
   return (
     <SafeAreaView style={globalStyles.container}>
-      <HistoryModal
-        showModal={showModal}
-        poste={selectedModal}
-        closeModal={() => {
-          dispatch({
-            type: HIDE_MODAL,
-          });
-        }}
-      />
-      <ScrollView style={{width: '100%', height: '100%'}}>
+      <ScrollView
+        style={{height: '100%', width: '100%'}}
+        contentContainerStyle={styles.homeContainer}>
         <View style={styles.header}>
           <Text style={styles.labelStyle}>Taux de Rendement Synthétique</Text>
         </View>
         <TRSComp type={'jours'} />
         <View style={styles.header}>
-          <Text style={styles.labelStyle}>
-            Taux de Rendement Globale (Mois){' '}
-          </Text>
+          <Text style={styles.labelStyle}>Temps Efficient Globale (Mois) </Text>
         </View>
-        <TRSGlobalComp />
-        <View style={styles.header}>
-          <Text style={styles.labelStyle}>Taux de Rebut par machine</Text>
-        </View>
-        <RebusComp />
+        <TempsEfficient />
+        {/* <View style={styles.header}>
+          <Text style={styles.labelStyle}>Temps de Rebut</Text>
+        </View> */}
       </ScrollView>
+      <Fab
+        backgroundColor={'#FDBA74'}
+        renderInPortal={false}
+        icon={<MaterialIcon color={'#FFF'} name="navigate-next" size={40} />}
+        color={'#FFF'}
+        onPress={() => {
+          navigation.navigate('Second');
+        }}
+      />
     </SafeAreaView>
   );
 };
@@ -54,17 +45,23 @@ export default MainScreen;
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: '#0284C7',
-    width: '90%',
-    height: 100,
-    marginTop: 20,
+    backgroundColor: '#FDBA74',
+    width: '100%',
+    height: 70,
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  homeContainer: {
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    width: '100%',
+    height: '100%',
+  },
   labelStyle: {
     fontSize: 24,
     color: '#FFF',
+    fontWeight: 'bold',
   },
   trsView: {
     display: 'flex',

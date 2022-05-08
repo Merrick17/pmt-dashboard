@@ -1,45 +1,111 @@
-import {StyleSheet, SafeAreaView, View, Image} from 'react-native';
-import React from 'react';
+import {StyleSheet, SafeAreaView, Text, Image} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import {globalStyles} from '../styles/globalStyles';
-import {
-  Input,
-  Center,
-  Box,
-  FormControl,
-  WarningOutlineIcon,
-  Button,
-} from 'native-base';
-
+import {Input, theme, Button} from 'galio-framework';
+import {Center, Box, View} from 'native-base';
+import {useForm, Controller} from 'react-hook-form';
+import {loginUserApi} from '../redux/actions/auth.action';
+import {useDispatch} from 'react-redux';
+import messaging from '@react-native-firebase/messaging';
 const LoginScreen = ({navigation}) => {
+  const [fcmToken, setFcmToken] = useState('');
+  const checkToken = async () => {
+    const deviceToken = await messaging().getToken();
+    if (deviceToken) {
+      console.log('Token', deviceToken);
+      setFcmToken(deviceToken);
+    }
+  };
+  const dispatch = useDispatch();
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm({
+    defaultValues: {
+      matricule: '',
+      password: '',
+    },
+  });
+  const onSubmit = data => {
+    console.log(data);
+    let body = {...data, deviceToken: fcmToken};
+    dispatch(loginUserApi(body, navigation));
+  };
+  useEffect(() => {
+    checkToken();
+  }, []);
   const loginUser = () => {
     navigation.replace('Main');
   };
   return (
     <SafeAreaView style={globalStyles.container}>
-      <Image source={require('../assets/pmt.png')} style={styles.companyLogo} />
+      <Image
+        source={require('../assets/logo.png')}
+        style={styles.companyLogo}
+      />
       <Center mt={3} style={styles.inputContainer}>
         <Box alignItems="center">
-          <FormControl isInvalid={false} w="100%" minWidth={450}>
-            <FormControl.Label>Matricule</FormControl.Label>
-            <Input placeholder="Matricule" />
-            <FormControl.ErrorMessage
-              leftIcon={<WarningOutlineIcon size="xs" />}>
-              Try different from previous passwords.
-            </FormControl.ErrorMessage>
-          </FormControl>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <Input
+                placeholder="Matricule"
+                borderless
+                color={theme.COLORS.WARNING}
+                style={{borderColor: theme.COLORS.WARNING, height: 65}}
+                placeholderTextColor={'#FFF'}
+                bgColor="rgba(0,0,0,0.4)"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="matricule"
+          />
+          {errors.matricule && (
+            <Text style={{color: 'red', margin: 3, alignSelf: 'flex-start'}}>
+              Champ Obligatoire.
+            </Text>
+          )}
         </Box>
         <Box alignItems="center" marginTop={5}>
-          <FormControl isInvalid={false} w="100%" minWidth={450}>
-            <FormControl.Label>Mot de passe</FormControl.Label>
-            <Input placeholder="Mot de passe" />
-            <FormControl.ErrorMessage
-              leftIcon={<WarningOutlineIcon size="xs" />}>
-              Try different from previous passwords.
-            </FormControl.ErrorMessage>
-          </FormControl>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({field: {onChange, onBlur, value}}) => (
+              <Input
+                placeholder="Mot de passe"
+                borderless
+                color={theme.COLORS.WARNING}
+                style={{borderColor: theme.COLORS.WARNING, height: 65}}
+                placeholderTextColor={'#FFF'}
+                password={true}
+                bgColor="rgba(0,0,0,0.4)"
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="password"
+          />
+          {errors.password && (
+            <Text style={{color: 'red', margin: 3, alignSelf: 'flex-start'}}>
+              Champ Obligatoire.
+            </Text>
+          )}
         </Box>
         <Box alignItems={'center'} marginTop={5}>
-          <Button size={'lg'} onPress={loginUser}>
+          <Button
+            color="warning"
+            round
+            onPress={handleSubmit(onSubmit)}
+            style={{width: 360, height: 60}}>
             Se Connecter
           </Button>
         </Box>

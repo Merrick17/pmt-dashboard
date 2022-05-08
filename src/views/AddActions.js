@@ -7,14 +7,14 @@ import {
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {globalStyles} from '../styles/globalStyles';
-import {Input, Box, Select, Button} from 'native-base';
+import {Box, Select, Button} from 'native-base';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import {useDispatch, useSelector} from 'react-redux';
 import {getAllUsersApi} from '../redux/actions/users.action';
 import moment from 'moment';
 import {useForm, Controller} from 'react-hook-form';
 import {addNewActionApi, addNewQRQCApi} from '../redux/actions/qrqc.actions';
-
+import {Input, theme} from 'galio-framework';
 const AddNewAction = ({navigation}) => {
   const dispatch = useDispatch();
   const {userList} = useSelector(state => state.users);
@@ -49,167 +49,225 @@ const AddNewAction = ({navigation}) => {
   };
 
   return (
-    <ScrollView
-      style={{width: '100%', height: '100%', backgroundColor: '#FFF'}}
-      contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}>
-      <View style={styles.problem}>
-        <View style={styles.header}>
-          <Text style={styles.label}>Action de correction</Text>
-        </View>
-        <View style={{padding: 10, justifyContent: 'space-evenly', flex: 1}}>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                w={650}
-                placeholder="Type"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
-            )}
-            name="type_action"
-          />
-          {errors.Service && (
-            <Text style={styles.errorLabel}>Champ obligatoire.</Text>
-          )}
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                w={650}
-                placeholder="Quantité en cours"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
-            )}
-            name="qte_en_cours"
-          />
-          {errors.NumArticle && (
-            <Text style={styles.errorLabel}>Champ obligatoire.</Text>
-          )}
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                w={650}
-                placeholder="Quantité en cours non conforme"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
-            )}
-            name="qte_en_cours_non_conforme"
-          />
-          {errors.NumOf && (
-            <Text style={styles.errorLabel}>Champ obligatoire.</Text>
-          )}
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                w={650}
-                placeholder="Quantité Magasin"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
-            )}
-            name="qte_magasin"
-          />
-          {errors.desc_prob && (
-            <Text style={styles.errorLabel}>Champ obligatoire.</Text>
-          )}
-          {errors.raison_defaut && (
-            <Text style={styles.errorLabel}>Champ obligatoire.</Text>
-          )}
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                w={650}
-                placeholder="Quantité Magasin non conforme"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
-            )}
-            name="qte_magasin_non_conforme"
-          />
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                w={650}
-                placeholder="Quantité de stock client"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
-            )}
-            name="qte_stock_client"
-          />
-          {errors.moyenne_detection && (
-            <Text style={styles.errorLabel}>Champ obligatoire.</Text>
-          )}
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({field: {onChange, onBlur, value}}) => (
-              <Input
-                w={650}
-                placeholder="Quantité de stock client non conforme"
-                onChangeText={onChange}
-                onBlur={onBlur}
-                value={value}
-              />
-            )}
-            name="qte_stock_client_non_conforme"
-          />
-          {errors.qte_stock_client_non_conforme && (
-            <Text style={styles.errorLabel}>Champ obligatoire.</Text>
-          )}
-        </View>
+    <View style={globalStyles.container}>
+      <View style={styles.header}>
+        <Text style={styles.label}>Action de correction</Text>
       </View>
+
+      <View
+        style={{
+          padding: 10,
+          justifyContent: 'flex-start',
+          flex: 1,
+          width: '100%',
+        }}>
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              borderless
+              color={theme.COLORS.WARNING}
+              style={{
+                borderColor: theme.COLORS.WARNING,
+                height: 65,
+                width: '100%',
+              }}
+              placeholderTextColor={'#FFF'}
+              password={true}
+              bgColor="rgba(0,0,0,0.4)"
+              placeholder="Type"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+            />
+          )}
+          name="type_action"
+        />
+        {errors.Service && (
+          <Text style={styles.errorLabel}>Champ obligatoire.</Text>
+        )}
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              borderless
+              color={theme.COLORS.WARNING}
+              style={{borderColor: theme.COLORS.WARNING, height: 65}}
+              placeholderTextColor={'#FFF'}
+              password={true}
+              bgColor="rgba(0,0,0,0.4)"
+              placeholder="Quantité en cours"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+            />
+          )}
+          name="qte_en_cours"
+        />
+        {errors.NumArticle && (
+          <Text style={styles.errorLabel}>Champ obligatoire.</Text>
+        )}
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              borderless
+              color={theme.COLORS.WARNING}
+              style={{borderColor: theme.COLORS.WARNING, height: 65}}
+              placeholderTextColor={'#FFF'}
+              password={true}
+              bgColor="rgba(0,0,0,0.4)"
+              placeholder="Quantité en cours non conforme"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+            />
+          )}
+          name="qte_en_cours_non_conforme"
+        />
+        {errors.NumOf && (
+          <Text style={styles.errorLabel}>Champ obligatoire.</Text>
+        )}
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              borderless
+              color={theme.COLORS.WARNING}
+              style={{borderColor: theme.COLORS.WARNING, height: 65}}
+              placeholderTextColor={'#FFF'}
+              password={true}
+              bgColor="rgba(0,0,0,0.4)"
+              placeholder="Quantité Magasin"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+            />
+          )}
+          name="qte_magasin"
+        />
+        {errors.desc_prob && (
+          <Text style={styles.errorLabel}>Champ obligatoire.</Text>
+        )}
+        {errors.raison_defaut && (
+          <Text style={styles.errorLabel}>Champ obligatoire.</Text>
+        )}
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              borderless
+              color={theme.COLORS.WARNING}
+              style={{borderColor: theme.COLORS.WARNING, height: 65}}
+              placeholderTextColor={'#FFF'}
+              password={true}
+              bgColor="rgba(0,0,0,0.4)"
+              placeholder="Quantité Magasin non conforme"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+            />
+          )}
+          name="qte_magasin_non_conforme"
+        />
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              borderless
+              color={theme.COLORS.WARNING}
+              style={{borderColor: theme.COLORS.WARNING, height: 65}}
+              placeholderTextColor={'#FFF'}
+              password={true}
+              bgColor="rgba(0,0,0,0.4)"
+              placeholder="Quantité de stock client"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+            />
+          )}
+          name="qte_stock_client"
+        />
+        {errors.moyenne_detection && (
+          <Text style={styles.errorLabel}>Champ obligatoire.</Text>
+        )}
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({field: {onChange, onBlur, value}}) => (
+            <Input
+              borderless
+              color={theme.COLORS.WARNING}
+              style={{borderColor: theme.COLORS.WARNING, height: 65}}
+              placeholderTextColor={'#FFF'}
+              password={true}
+              bgColor="rgba(0,0,0,0.4)"
+              placeholder="Quantité de stock client non conforme"
+              onChangeText={onChange}
+              onBlur={onBlur}
+              value={value}
+            />
+          )}
+          name="qte_stock_client_non_conforme"
+        />
+        {errors.qte_stock_client_non_conforme && (
+          <Text style={styles.errorLabel}>Champ obligatoire.</Text>
+        )}
+      </View>
+
       <View style={styles.btnList}>
-        <Button
-          size={'lg'}
-          style={{width: '40%'}}
+        <TouchableOpacity
+          style={{
+            width: '45%',
+            height: 70,
+            backgroundColor: '#EA580C',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 20,
+          }}
           onPress={handleSubmit(onSubmit)}>
-          Ajouter
-        </Button>
-        <Button
-          size={'lg'}
-          style={{width: '40%'}}
-          colorScheme="secondary"
+          <Text style={{fontSize: 20, fontWeight: 'bold', color: '#FFF'}}>
+            Confirmer
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            width: '45%',
+            height: 70,
+            backgroundColor: '#BE123C',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 20,
+          }}
           onPress={() => {
-            navigation.navigate('List');
+            navigation.pop();
           }}>
-          Terminer
-        </Button>
+          <Text style={{fontSize: 20, fontWeight: 'bold', color: '#FFF'}}>
+            Annuler
+          </Text>
+        </TouchableOpacity>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -217,19 +275,20 @@ export default AddNewAction;
 
 const styles = StyleSheet.create({
   problem: {
-    width: '90%',
+    width: '100%',
     minHeight: 550,
     marginTop: 25,
-    backgroundColor: '#FFF',
     alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
+    marginLeft: '10%',
   },
   header: {
+    backgroundColor: '#FDBA74',
     width: '100%',
-    height: 50,
-    backgroundColor: '#0284C7',
-    justifyContent: 'center',
+    height: 100,
+    alignSelf: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   label: {
     fontSize: 24,

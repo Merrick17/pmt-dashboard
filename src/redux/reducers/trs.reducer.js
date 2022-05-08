@@ -1,4 +1,9 @@
-import {GET_TRS_INFO, GET_TRS_INFO_SUCCESS} from '../actionTypes';
+import {
+  GET_TEMPS_EFFICIENT,
+  GET_TEMPS_EFFICIENT_SUCCESS,
+  GET_TRS_INFO,
+  GET_TRS_INFO_SUCCESS,
+} from '../actionTypes';
 
 const TRSInitState = {
   loading: false,
@@ -19,6 +24,7 @@ const trsReducer = (state = TRSInitState, action) => {
       return {...state, loading: true};
     case GET_TRS_INFO_SUCCESS:
       return {...state, loading: false, data: payload};
+   
     default:
       return state;
   }

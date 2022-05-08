@@ -1,4 +1,10 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 
 import {Button, FlatList, Modal} from 'native-base';
@@ -38,78 +44,67 @@ const TRSComp = () => {
   return (
     <View style={styles.trsView}>
       <View style={styles.trsButtons}>
-        <Button
+        <TouchableOpacity
+          style={type == 'day' ? styles.btnTypeSelected : styles.btnType}
           onPress={() => {
             setType('day');
           }}>
-          Par Jours
-        </Button>
-        <Button
+          <Text style={styles.btnLabel}>Par Jours</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={type == 'week' ? styles.btnTypeSelected : styles.btnType}
           onPress={() => {
             setType('week');
           }}>
-          Par Semaine
-        </Button>
-        <Button
+          <Text style={styles.btnLabel}>Par Semaine</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={type == 'month' ? styles.btnTypeSelected : styles.btnType}
           onPress={() => {
             setType('month');
           }}>
-          Par Mois
-        </Button>
+          <Text style={styles.btnLabel}>Par Mois</Text>
+        </TouchableOpacity>
       </View>
-      <View
-        style={{
-          flexDirection: 'column',
+      <ScrollView
+        style={{width: '100%', marginTop: 20}}
+        contentContainerStyle={{
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <FlatList
-          data={data}
-          contentContainerStyle={{
-            width: '100%',
-          }}
-          nestedScrollEnabled
-          numColumns={2}
-          horizontal={false}
-          renderItem={({item, index}) => {
-            // console.log('Item', item);
-            return (
-              <TouchableOpacity
-                style={styles.speedoMeter}
-                onPress={() => {
-                  dispatch(getPosteHistoryApi(item.Poste_charge));
-                }}>
-                <Speedometer
-                  key={index.toString()}
-                  value={item.trs}
-                  max={100}
-                  angle={160}
-                  fontFamily="squada-one">
-                  <Background angle={180} />
-                  <Arc col />
-                  <Needle />
-                  <Progress color={displayColor(item.trs)} />
-                  <Marks />
-                  <Indicator>
-                    {(value, textProps) => (
-                      <Text
-                        {...textProps}
-                        fontSize={60}
-                        fill="#555"
-                        x={250 / 2}
-                        y={210}
-                        textAnchor="middle"
-                        fontFamily="squada-one">
-                        {value}%
-                      </Text>
-                    )}
-                  </Indicator>
-                </Speedometer>
-              </TouchableOpacity>
-            );
-          }}
-        />
-      </View>
+        {data.map((item, index) => (
+          <View style={styles.speedoMeter}>
+            <Text style={styles.speedLabel}>{item.Poste_charge}</Text>
+            <Speedometer
+              width={500}
+              key={index.toString()}
+              value={item.trs}
+              max={100}
+              angle={160}
+              fontFamily="squada-one">
+              <Background angle={180} />
+              <Arc col />
+              <Needle />
+              <Progress color={displayColor(item.trs)} />
+              <Marks />
+              <Indicator>
+                {(value, textProps) => (
+                  <Text
+                    {...textProps}
+                    fontSize={60}
+                    fill="#555"
+                    x={250 / 2}
+                    y={210}
+                    textAnchor="middle"
+                    fontFamily="squada-one">
+                    {value}%
+                  </Text>
+                )}
+              </Indicator>
+            </Speedometer>
+          </View>
+        ))}
+      </ScrollView>
     </View>
   );
 };
@@ -119,26 +114,57 @@ export default TRSComp;
 const styles = StyleSheet.create({
   trsView: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-evenly',
     alignItems: 'flex-start',
-    maxHeight: 600,
+    maxHeight: 430,
+    width: 700,
+    marginLeft:30
   },
   trsButtons: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     justifyContent: 'space-evenly',
-    height: '50%',
+    width: '100%',
   },
   speedoMeter: {
-    width: 250,
-    height: 250,
-    margin: 10,
+    width: 500,
+    height: 650,
+    marginBottom: 5,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  speedLabel: {
+    color: '#FFF',
+    fontSize: 24,
   },
   btnStyle: {
     width: 70,
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  btnType: {
+    width: '30%',
+    height: 70,
+    backgroundColor: '#FB923C',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    marginTop: 20,
+  },
+  btnTypeSelected: {
+    width: '30%',
+    height: 70,
+    backgroundColor: '#EA580C',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    marginTop: 20,
+  },
+  btnLabel: {
+    color: '#FFF',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });

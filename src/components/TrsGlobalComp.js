@@ -23,6 +23,7 @@ import {getPosteHistoryApi} from '../redux/actions/modal.action';
 const TRSGlobalComp = () => {
   const dispatch = useDispatch();
   const {data} = useSelector(state => state.trsGlobal);
+  const [type, setType] = useState('type');
 
   useEffect(() => {
     dispatch(getTrsGlobalApi());
@@ -39,6 +40,29 @@ const TRSGlobalComp = () => {
   };
   return (
     <View style={styles.trsView}>
+      <View style={styles.trsButtons}>
+        <TouchableOpacity
+          style={type == 'day' ? styles.btnTypeSelected : styles.btnType}
+          onPress={() => {
+            setType('day');
+          }}>
+          <Text style={styles.btnLabel}>Par Jours</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={type == 'week' ? styles.btnTypeSelected : styles.btnType}
+          onPress={() => {
+            setType('week');
+          }}>
+          <Text style={styles.btnLabel}>Par Semaine</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={type == 'month' ? styles.btnTypeSelected : styles.btnType}
+          onPress={() => {
+            setType('month');
+          }}>
+          <Text style={styles.btnLabel}>Par Mois</Text>
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={data}
         style={{
@@ -97,28 +121,56 @@ export default TRSGlobalComp;
 const styles = StyleSheet.create({
   trsView: {
     display: 'flex',
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-evenly',
     alignItems: 'flex-start',
-    maxHeight: 600,
+    maxHeight: 430,
+    width: 700,
   },
   trsButtons: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     justifyContent: 'space-evenly',
-    height: '50%',
+    width: '100%',
   },
   speedoMeter: {
-    margin: 10,
+    width: 500,
+    height: 450,
+    marginBottom: 5,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
   },
-  label: {
-    position: 'absolute',
-    bottom: -20,
+  speedLabel: {
+    color: '#FFF',
+    fontSize: 24,
   },
   btnStyle: {
     width: 70,
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  btnType: {
+    width: '30%',
+    height: 70,
+    backgroundColor: '#FB923C',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    marginTop: 20,
+  },
+  btnTypeSelected: {
+    width: '30%',
+    height: 70,
+    backgroundColor: '#EA580C',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 20,
+    marginTop: 20,
+  },
+  btnLabel: {
+    color: '#FFF',
+    fontSize: 20,
+    fontWeight: 'bold',
   },
 });

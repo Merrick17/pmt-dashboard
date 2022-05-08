@@ -18,38 +18,10 @@ const Dashboard = () => {
 
   return (
     <SafeAreaView style={globalStyles.container}>
-      <ScrollView>
-        <View style={styles.header}>
-          <Text style={styles.labelStyle}>Taux d'absentisme</Text>
-        </View>
-        <AbsentComp />
-        <View style={styles.header}>
-          <Text style={styles.labelStyle}>Taux de Rebut</Text>
-        </View>
-        <View style={styles.trsView}>
-          <View style={styles.trsButtons}>
-            <Button>Par Jours</Button>
-            <Button>Par Semaine</Button>
-            <Button>Par Mois</Button>
-          </View>
-          <VictoryChart width={350} theme={VictoryTheme.material}>
-            <VictoryBar data={data} x="quarter" y="earnings" />
-          </VictoryChart>
-        </View>
-        <View style={styles.header}>
-          <Text style={styles.labelStyle}>Taux de Respect de Production</Text>
-        </View>
-        <View style={styles.trsView}>
-          <View style={styles.trsButtons}>
-            <Button>Par Jours</Button>
-            <Button>Par Semaine</Button>
-            <Button>Par Mois</Button>
-          </View>
-          <VictoryChart width={350} theme={VictoryTheme.material}>
-            <VictoryBar data={data} x="quarter" y="earnings" />
-          </VictoryChart>
-        </View>
-      </ScrollView>
+      <View style={styles.header}>
+        <Text style={styles.labelStyle}>Taux d'absentisme</Text>
+      </View>
+      <AbsentComp />
     </SafeAreaView>
   );
 };
@@ -58,8 +30,8 @@ export default Dashboard;
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: '#0284C7',
-    width: '90%',
+    backgroundColor: '#FDBA74',
+    width: '100%',
     height: 100,
     marginTop: 20,
     alignSelf: 'center',

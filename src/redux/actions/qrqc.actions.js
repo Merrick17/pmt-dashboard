@@ -1,4 +1,4 @@
-import {getApi, postApi} from '../../utils/apiHelpers';
+import {deleteApi, getApi, postApi} from '../../utils/apiHelpers';
 import {
   ADD_NEW_QRQC,
   ADD_NEW_QRQC_SUCCESS,
@@ -48,6 +48,15 @@ export const addNewActionApi = body => async dispatch => {
   try {
     let result = await postApi('qrqc/action/add', body);
     if (result) {
+      dispatch(getAllQrQcApi());
+    }
+  } catch (error) {}
+};
+
+export const deleteQrQcApi = id => async dispatch => {
+  try {
+    let result = await deleteApi('qrqc/' + id);
+    if (result.success) {
       dispatch(getAllQrQcApi());
     }
   } catch (error) {}

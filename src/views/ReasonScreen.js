@@ -1,9 +1,11 @@
-import {StyleSheet, Text, ScrollView, View} from 'react-native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
-import {Input, Center, Button} from 'native-base';
+import {Center, Button} from 'native-base';
 import {useDispatch, useSelector} from 'react-redux';
 import {addNewReasonApi} from '../redux/actions/qrqc.actions';
+import {globalStyles} from '../styles/globalStyles';
+import {Input, theme} from 'galio-framework';
 const ReasonScreen = ({navigation}) => {
   const [respList, setRespList] = useState(['rep_1']);
   const {newQrQc} = useSelector(state => state.qrqc);
@@ -33,13 +35,11 @@ const ReasonScreen = ({navigation}) => {
     console.log(data);
   };
   return (
-    <ScrollView
-      style={{width: '100%', height: '100%', backgroundColor: '#FFF'}}
-      contentContainerStyle={{justifyContent: 'center', alignItems: 'center'}}>
+    <View style={globalStyles.container}>
+      <View style={styles.header}>
+        <Text style={styles.label}>Cause du problème</Text>
+      </View>
       <View style={styles.problem}>
-        <View style={styles.header}>
-          <Text style={styles.label}>Cause du problème</Text>
-        </View>
         <View>
           <View
             style={{
@@ -58,24 +58,46 @@ const ReasonScreen = ({navigation}) => {
               render={({field: {onChange, onBlur, value}}) => (
                 <Input
                   size="2xl"
-                  w={450}
                   placeholder="Cause"
                   onChangeText={onChange}
                   onBlur={onBlur}
                   value={value}
+                  borderless
+                  color={theme.COLORS.WARNING}
+                  style={{
+                    borderColor: theme.COLORS.WARNING,
+                    height: 65,
+                    width: '100%',
+                  }}
+                  placeholderTextColor={'#FFF'}
+                  password={true}
+                  bgColor="rgba(0,0,0,0.4)"
                 />
               )}
               name="desc_cause"
             />
-            <Button onPress={addField} style={{height: 50}}>
-              Ajouter reponse
-            </Button>
+            <TouchableOpacity
+              onPress={addField}
+              style={{
+                width: '35%',
+                height: 70,
+                backgroundColor: '#EA580C',
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: 20,
+              }}>
+              <Text style={{fontSize: 20, color: '#FFF', fontWeight: 'bold'}}>
+                {' '}
+                Ajouter reponse
+              </Text>
+            </TouchableOpacity>
           </View>
           <View
             style={{
               width: '100%',
               justifyContent: 'flex-start',
               alignItems: 'flex-start',
+              marginTop: 10,
             }}>
             {respList.map((elm, ind) => (
               <>
@@ -95,6 +117,12 @@ const ReasonScreen = ({navigation}) => {
                       value={value}
                       marginTop={10}
                       height={150}
+                      borderless
+                      color={theme.COLORS.WARNING}
+                      style={{borderColor: theme.COLORS.WARNING, height: 65}}
+                      placeholderTextColor={'#FFF'}
+                      password={true}
+                      bgColor="rgba(0,0,0,0.4)"
                     />
                   )}
                   name={elm}
@@ -108,23 +136,38 @@ const ReasonScreen = ({navigation}) => {
         </View>
       </View>
       <View style={styles.btnList}>
-        <Button
-          size={'lg'}
-          style={{width: '40%'}}
+        <TouchableOpacity
+          style={{
+            width: '45%',
+            height: 70,
+            backgroundColor: '#EA580C',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 20,
+          }}
           onPress={handleSubmit(onSubmit)}>
-          Suivant
-        </Button>
-        <Button
-          size={'lg'}
-          style={{width: '40%'}}
-          colorScheme="secondary"
+          <Text style={{fontSize: 20, fontWeight: 'bold', color: '#FFF'}}>
+            Confirmer
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={{
+            width: '45%',
+            height: 70,
+            backgroundColor: '#BE123C',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 20,
+          }}
           onPress={() => {
-            navigation.navigate('Reason');
+            navigation.pop();
           }}>
-          Annuler
-        </Button>
+          <Text style={{fontSize: 20, fontWeight: 'bold', color: '#FFF'}}>
+            Annuler
+          </Text>
+        </TouchableOpacity>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 
@@ -132,19 +175,21 @@ export default ReasonScreen;
 
 const styles = StyleSheet.create({
   problem: {
-    width: '90%',
+    width: '100%',
     minHeight: 550,
     marginTop: 25,
-    backgroundColor: '#FFF',
+    padding: 10,
+
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
   header: {
+    backgroundColor: '#FDBA74',
     width: '100%',
     height: 100,
-    backgroundColor: '#0284C7',
-    justifyContent: 'center',
+    alignSelf: 'center',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   label: {
     fontSize: 24,

@@ -7,6 +7,7 @@ import {
   VictoryLine,
   VictoryTheme,
   VictoryLegend,
+  VictoryBar,
 } from 'victory-native';
 const AbsentComp = () => {
   const dispatch = useDispatch();
@@ -42,9 +43,9 @@ const AbsentComp = () => {
                       style={{border: {stroke: 'black'}, title: {fontSize: 20}}}
                       data={[{name: item[0].Matricule}]}
                     />
-                    <VictoryLine
+                    <VictoryBar
                       style={{
-                        data: {stroke: '#c43a31'},
+                        data: {fill: '#c43a31'},
                         parent: {border: '1px solid #ccc'},
                       }}
                       data={item}

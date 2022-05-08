@@ -1,4 +1,4 @@
-import {getApi} from '../../utils/apiHelpers';
+import {getApi, putApi} from '../../utils/apiHelpers';
 import {GET_ALL_USERS, GET_ALL_USERS_SUCCESS} from '../actionTypes';
 
 export const getAllUsers = () => {
@@ -22,4 +22,13 @@ export const getAllUsersApi = () => async dispatch => {
   } catch (error) {
     console.log('Error', error.message);
   }
+};
+export const updateUserInfo = data => async dispatch => {
+  try {
+    let result = await putApi('user/edit/user', data);
+    console.log('update user', result);
+    if (result) {
+      dispatch(getAllUsersApi());
+    }
+  } catch (error) {}
 };

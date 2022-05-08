@@ -10,6 +10,7 @@ import AddNewQRQC from '../views/AddNewQRQC';
 import AddNewAction from '../views/AddActions';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import ReasonScreen from '../views/ReasonScreen';
+import DetailQrQC from '../views/DetailQrQC';
 const Tab = createBottomTabNavigator();
 const QualityNav = createNativeStackNavigator();
 const QualityNavStack = () => {
@@ -21,6 +22,7 @@ const QualityNavStack = () => {
       <QualityNav.Screen name="Add" component={AddNewQRQC} />
       <QualityNav.Screen name="Reason" component={ReasonScreen} />
       <QualityNav.Screen name="Action" component={AddNewAction} />
+      <QualityNav.Screen name="Details" component={DetailQrQC} />
     </QualityNav.Navigator>
   );
 };

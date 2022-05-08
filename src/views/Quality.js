@@ -4,7 +4,8 @@ import {globalStyles} from '../styles/globalStyles';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import {Fab, FlatList, Icon} from 'native-base';
 import {useDispatch, useSelector} from 'react-redux';
-import {getAllQrQcApi} from '../redux/actions/qrqc.actions';
+import {deleteQrQcApi, getAllQrQcApi} from '../redux/actions/qrqc.actions';
+import {NavBar} from 'galio-framework';
 import moment from 'moment';
 const Quality = ({route, navigation}) => {
   const {list} = useSelector(state => state.qrqc);
@@ -12,10 +13,15 @@ const Quality = ({route, navigation}) => {
   useEffect(() => {
     dispatch(getAllQrQcApi());
   }, []);
+  const consultDetails = item => {
+    navigation.navigate('Details', {
+      model: item,
+    });
+  };
   return (
     <View style={globalStyles.container}>
       <View style={styles.header}>
-        <Text style={styles.labelStyle}>Controle Qualité</Text>
+        <Text style={styles.labelStyle}>Tableau QRQC</Text>
       </View>
       <FlatList
         data={list}
@@ -52,18 +58,38 @@ const Quality = ({route, navigation}) => {
                     moment(item.Date_probleme).format('DD/MM/YYYY')}
                 </Text>
               </View>
-              <TouchableOpacity style={styles.consultBtn}>
-                <MaterialIcon name="content-copy" color={'#FFF'} />
-                <Text style={styles.btnLabel}>Consulter</Text>
-              </TouchableOpacity>
+              <View
+                style={{
+                  width: '40%',
+                  flexDirection: 'row',
+                  justifyContent: 'space-evenly',
+                }}>
+                <TouchableOpacity
+                  style={styles.consultBtn}
+                  onPress={() => {
+                    consultDetails(item);
+                  }}>
+                  <MaterialIcon name="content-copy" color={'#FFF'} />
+                  <Text style={styles.btnLabel}>Consulter</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.deleteBtn}
+                  onPress={() => {
+                    dispatch(deleteQrQcApi(item.id_qrqc));
+                  }}>
+                  <MaterialIcon name="delete" color={'#FFF'} />
+                  <Text style={styles.btnLabel}>Supprimer</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         )}
       />
       <Fab
         onPress={() => {
-          navigation.navigate('Add');
+          navigation.navigate('AddNew');
         }}
+        backgroundColor="#F97316"
         renderInPortal={false}
         shadow={2}
         placement="bottom-right"
@@ -72,6 +98,7 @@ const Quality = ({route, navigation}) => {
           <Icon color="white" as={MaterialIcon} name="add-alert" size="4" />
         }
         label="Ajouter nouveau"
+        color={'#F97316'}
       />
     </View>
   );
@@ -81,10 +108,9 @@ export default Quality;
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: '#0284C7',
-    width: '90%',
-    minHeight: 150,
-    marginTop: 20,
+    backgroundColor: '#FDBA74',
+    width: '100%',
+    height: 100,
     alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
@@ -95,11 +121,12 @@ const styles = StyleSheet.create({
   },
   card: {
     width: 670,
-    height: 170,
-    borderColor: '#E0F2FE',
+    height: 200,
+    backgroundColor: '#FFF7ED',
     marginVertical: 10,
     borderWidth: 3,
     marginLeft: 50,
+    borderRadius: 10,
   },
 
   errorIcon: {
@@ -127,11 +154,22 @@ const styles = StyleSheet.create({
   consultBtn: {
     width: 120,
     height: 50,
-    backgroundColor: '#0284C7',
+    backgroundColor: '#F97316',
     flexDirection: 'row',
     padding: 4,
     justifyContent: 'space-evenly',
     alignItems: 'center',
+    borderRadius: 10,
+  },
+  deleteBtn: {
+    backgroundColor: '#BE123C',
+    width: 120,
+    height: 50,
+    flexDirection: 'row',
+    padding: 4,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    borderRadius: 10,
   },
   footer: {
     width: '95%',

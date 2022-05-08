@@ -6,7 +6,7 @@ const globalStyles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor:"#f7f7f7"
+    backgroundColor: '#0B1326',
   },
 });
 
