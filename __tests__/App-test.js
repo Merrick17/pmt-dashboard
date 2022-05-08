@@ -5,10 +5,10 @@
 import 'react-native';
 import React from 'react';
 import App from '../App';
-
+import ShallowRenderer from 'react-test-renderer/shallow';
 // Note: test renderer must be required after react-native.
-import renderer from 'react-test-renderer';
+const renderer = new ShallowRenderer();
 
 it('renders correctly', () => {
- // renderer.create(<App />);
+  renderer.create(<App />);
 });
